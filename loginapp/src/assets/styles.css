@@ -1,0 +1,471 @@
+/* General Styles */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 40px 16px;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Auth card (Login & Register) */
+.login-container {
+    text-align: left;
+    padding: 32px 32px 28px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    width: 100%;
+    max-width: 480px;
+}
+    
+    .heading {
+        color: #0f172a;
+        font-size: 26px;
+        font-weight: 700;
+        text-align: center;
+        margin: 0 0 24px;
+    }
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+    
+.login-input {
+    padding: 10px 12px;
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.login-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb33;
+}
+
+.login-label {
+    font-size: 13px;
+    color: #4b5563;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.login-button {
+    margin-top: 8px;
+    padding: 10px 16px;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    width: 100%;
+}
+
+.login-button:hover {
+    background-color: #1d4ed8;
+}
+
+.new-user-link {
+    margin-top: 8px;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+}
+
+.new-user-link:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    margin-top: 10px;
+    color: #dc2626;
+    font-size: 13px;
+    text-align: center;
+}
+
+.success-message {
+    margin-top: 10px;
+    color: #16a34a;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ========== Professional Registration Form ========== */
+.register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px 16px;
+    box-sizing: border-box;
+}
+
+.register-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 36px 32px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.register-heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+    text-align: center;
+    margin: 0 0 28px;
+    letter-spacing: -0.02em;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.register-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.register-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.register-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    color: #111827;
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.register-input::placeholder {
+    color: #9ca3af;
+}
+
+.register-input:hover {
+    border-color: #d1d5db;
+}
+
+.register-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    background-color: #fff;
+}
+
+.register-button {
+    margin-top: 6px;
+    padding: 12px 16px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.register-button:hover {
+    background-color: #1d4ed8;
+}
+
+.register-button:active {
+    background-color: #1e40af;
+}
+
+.register-back-link {
+    display: block;
+    margin-top: 4px;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.register-back-link:hover {
+    text-decoration: underline;
+    color: #1d4ed8;
+}
+
+.register-message {
+    margin-top: 14px;
+    font-size: 0.8125rem;
+    text-align: center;
+}
+
+.register-error {
+    color: #dc2626;
+}
+
+.register-success {
+    color: #16a34a;
+}
+
+/* ========== Student Registration Form (exact layout: label left, input right) ========== */
+.student-register-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 32px 16px;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+}
+
+.student-register-container {
+    width: 100%;
+    max-width: 560px;
+    padding: 32px 40px 36px;
+    background: #fffefb;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.student-register-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin: 0 0 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.student-register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.student-form-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (max-width: 520px) {
+    .student-form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.student-form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    padding-top: 10px;
+    line-height: 1.3;
+}
+
+.student-form-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.student-input {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+    color: #111827;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.student-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+.student-input-full {
+    width: 100%;
+}
+
+.student-form-name-group .student-input {
+    flex: 1;
+    min-width: 100px;
+}
+
+.student-form-dob-group .student-select {
+    width: auto;
+    min-width: 70px;
+}
+
+.student-form-dob-group .student-select:last-of-type {
+    min-width: 80px;
+}
+
+.student-form-hint {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.student-form-mobile-group .student-input-code {
+    width: 56px;
+    flex-shrink: 0;
+}
+
+.student-form-mobile-group .student-input-mobile {
+    flex: 1;
+    min-width: 120px;
+}
+
+.student-select {
+    cursor: pointer;
+    appearance: auto;
+}
+
+.student-form-radio-group {
+    gap: 16px;
+}
+
+.student-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+}
+
+.student-radio-label input {
+    width: 16px;
+    height: 16px;
+    accent-color: #2563eb;
+}
+
+.student-form-file-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.student-file-input {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.student-file-label {
+    display: inline-block;
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    color: #374151;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.student-file-label:hover {
+    background: #e5e7eb;
+}
+
+.student-file-name {
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.student-textarea {
+    resize: vertical;
+    min-height: 72px;
+}
+
+.student-form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.student-register-button {
+    padding: 12px 48px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: #2563eb;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.student-register-button:hover {
+    background: #1d4ed8;
+}
+
+.student-back-link {
+    font-size: 0.875rem;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.student-back-link:hover {
+    text-decoration: underline;
+}
+
+.student-form-message {
+    margin-top: 12px;
+    font-size: 0.8125rem;
+    text-align: center;
+}
+
+.student-form-error {
+    color: #dc2626;
+}
+
+.student-form-success {
+    color: #16a34a;
+}
+
+/* Dashboard Component Styles */
+.dashboard-container {
+    text-align: center;
+}
+
+    
