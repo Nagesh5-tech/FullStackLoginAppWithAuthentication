@@ -1,25 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "./assets/styles.css";
 import API_BASE_URL from "./config/api";
 
-function Login({ setUser, onNewUser }){
-    const [username,setUsername ]=useState("");
-    const  [password,setPassword]=useState("");
+const MONTHS = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+];
 
-    const [error, setError]=useState("");
+function Register({ onBackToLogin }) {
+    const [name, setName] = useState("");
+    const [fatherName, setFatherName] = useState("");
+    const [day, setDay] = useState("");
+    const [month, setMonth] = useState("");
+    const [year, setYear] = useState("");
+    const [countryCode, setCountryCode] = useState("+91");
+    const [mobile, setMobile] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [gender, setGender] = useState("");
+    const [photoFile, setPhotoFile] = useState(null);
+    const [city, setCity] = useState("");
+    const [address, setAddress] = useState("");
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
-        try{
-            const response = await fetch(`${API_BASE_URL}/api/login`,{
+        const dob = [day, month, year].filter(Boolean).length === 3
+            ? `${year}-${String(MONTHS.indexOf(month) + 1).padStart(2, "0")}-${day.padStart(2, "0")}`
+            : "";
+
+        const payload = {
+            userName: name,
+            fatherName,
+            dateOfBirth: dob,
+            mobileNumber: mobile,
+            email,
+            password,
+            gender,
+            city,
+            address,
+            photo: photoFile ? photoFile.name : null,
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/signup`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // Backend expects 'email' and 'password'
-                body: JSON.stringify({ email: username, password }),
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
             });
 
             let data = {};
@@ -31,50 +62,219 @@ function Login({ setUser, onNewUser }){
             }
 
             if (response.ok) {
-                // Backend returns status: "otp_sent" or "failed"
-                if (data.status === "otp_sent" || data.status === "success") {
-                    // Valid existing user – proceed to app (or next OTP step)
-                    setUser(username);
-                } else {
-                    // New / invalid user or wrong credentials
-                    setError(data.message || "Invalid user");
-                }
+                setSuccess(data.message || "Registration successful. You can now log in.");
+                setName("");
+                setFatherName("");
+                setDay("");
+                setMonth("");
+                setYear("");
+                setMobile("");
+                setEmail("");
+                setPassword("");
+                setGender("");
+                setPhotoFile(null);
+                setCity("");
+                setAddress("");
             } else {
-                setError(data.message || `Login failed (status ${response.status}).`);
+                setError(data.message || `Registration failed (status ${response.status}). Please try again.`);
             }
-        }catch(error){
-            setError("Something went wrong. please try again. " + error.message);
+        } catch (err) {
+            setError("Something went wrong. Please try again. " + err.message);
         }
-        };
+    };
 
-        return (
-            <div className="login-container">
-                <h2 className="heading">Login</h2>
+    return (
+        <div className="student-register-wrapper">
+            <div className="student-register-container">
+                <h2 className="student-register-heading">Registration Form</h2>
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <label htmlFor="username" className="login-label">Username:</label>
-                    <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} className="login-input" required/>
-                    <label htmlFor="password" className="login-label">Password:</label>
-                    <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="login-input" placeholder="Enter your password" required/>
-                    <button type="submit" className="login-button">Login</button>
-                    
-                    <a
-                        href="#"
-                        className="new-user-link"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            if (onNewUser) {
-                                onNewUser();
-                            }
-                        }}
-                    >
-                        New user?
-                    </a>
+                <form onSubmit={handleSubmit} className="student-register-form" noValidate>
+                    <div className="student-form-row">
+                        <label className="student-form-label">Name</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="student-input student-input-full"
+                            placeholder="Enter your name"
+                            required
+                        />
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Father's name</label>
+                        <input
+                            type="text"
+                            value={fatherName}
+                            onChange={(e) => setFatherName(e.target.value)}
+                            className="student-input student-input-full"
+                            required
+                        />
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Date of birth</label>
+                        <div className="student-form-inputs student-form-dob-group">
+                            <select
+                                value={day}
+                                onChange={(e) => setDay(e.target.value)}
+                                className="student-input student-select"
+                            >
+                                <option value="">Day</option>
+                                {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                                    <option key={d} value={d}>{d}</option>
+                                ))}
+                            </select>
+                            <select
+                                value={month}
+                                onChange={(e) => setMonth(e.target.value)}
+                                className="student-input student-select"
+                            >
+                                <option value="">Month</option>
+                                {MONTHS.map((m) => (
+                                    <option key={m} value={m}>{m}</option>
+                                ))}
+                            </select>
+                            <select
+                                value={year}
+                                onChange={(e) => setYear(e.target.value)}
+                                className="student-input student-select"
+                            >
+                                <option value="">Year</option>
+                                {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - 5 - i).map((y) => (
+                                    <option key={y} value={y}>{y}</option>
+                                ))}
+                            </select>
+                            <span className="student-form-hint">(DD-MM-YYYY)</span>
+                        </div>
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Mobile no.</label>
+                        <div className="student-form-inputs student-form-mobile-group">
+                            <input
+                                type="text"
+                                value={countryCode}
+                                onChange={(e) => setCountryCode(e.target.value)}
+                                className="student-input student-input-code"
+                            />
+                            <input
+                                type="tel"
+                                value={mobile}
+                                onChange={(e) => setMobile(e.target.value)}
+                                className="student-input student-input-mobile"
+                                placeholder="Phone number"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Email id</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="student-input student-input-full"
+                            required
+                        />
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Password</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="student-input student-input-full"
+                            required
+                        />
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Gender</label>
+                        <div className="student-form-inputs student-form-radio-group">
+                            <label className="student-radio-label">
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Male"
+                                    checked={gender === "Male"}
+                                    onChange={(e) => setGender(e.target.value)}
+                                />
+                                <span>Male</span>
+                            </label>
+                            <label className="student-radio-label">
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="Female"
+                                    checked={gender === "Female"}
+                                    onChange={(e) => setGender(e.target.value)}
+                                />
+                                <span>Female</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Photo</label>
+                        <div className="student-form-file-wrap">
+                            <input
+                                type="file"
+                                id="student-photo"
+                                accept="image/*"
+                                onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)}
+                                className="student-file-input"
+                            />
+                            <label htmlFor="student-photo" className="student-file-label">
+                                Choose File
+                            </label>
+                            <span className="student-file-name">
+                                {photoFile ? photoFile.name : "No file chosen"}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">City</label>
+                        <input
+                            type="text"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="student-input student-input-full"
+                        />
+                    </div>
+
+                    <div className="student-form-row">
+                        <label className="student-form-label">Address</label>
+                        <textarea
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="student-input student-textarea student-input-full"
+                            rows={3}
+                        />
+                    </div>
+
+                    <div className="student-form-actions">
+                        <button type="submit" className="student-register-button">Register</button>
+                        <a
+                            href="#"
+                            className="student-back-link"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onBackToLogin?.();
+                            }}
+                        >
+                            Back to Login
+                        </a>
+                    </div>
                 </form>
-                {error && <p className="error-message">{error}</p>}
+
+                {error && <p className="student-form-message student-form-error">{error}</p>}
+                {success && <p className="student-form-message student-form-success">{success}</p>}
             </div>
-
-        );
-
+        </div>
+    );
 }
-export default Login;
+
+export default Register;
