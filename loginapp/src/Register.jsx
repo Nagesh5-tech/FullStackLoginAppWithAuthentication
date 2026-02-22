@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./assets/styles.css";
-import { apiSignup } from "./api";
+import { apiSignup, wakeServer } from "./api";
 
 const MONTHS = [
     "January", "February", "March", "April", "May", "June",
@@ -24,11 +24,15 @@ function Register({ onBackToLogin }) {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
+    const [wakingStatus, setWakingStatus] = useState("");
+
+    useEffect(() => { wakeServer(); }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setSuccess("");
+        setWakingStatus("");
         setLoading(true);
 
         const dob = [day, month, year].filter(Boolean).length === 3
@@ -49,7 +53,9 @@ function Register({ onBackToLogin }) {
         };
 
         try {
-            const { ok, status, data } = await apiSignup(payload);
+            const { ok, status, data } = await apiSignup(payload, (attempt, max) => {
+                setWakingStatus(`Connecting to server... (attempt ${attempt} of ${max})`);
+            });
 
             if (ok) {
                 setSuccess(data.message || "Registration successful. You can now log in.");
@@ -70,11 +76,12 @@ function Register({ onBackToLogin }) {
             }
         } catch (err) {
             const msg = err.message || "Unknown error";
-            setError(msg.includes("Failed to fetch") || msg.includes("AbortError")
+            setError(msg.includes("Failed to fetch") || msg.includes("AbortError") || msg.includes("network")
                 ? "Server is waking up. Please wait a moment and try again."
                 : "Something went wrong. Please try again. " + msg);
         } finally {
             setLoading(false);
+            setWakingStatus("");
         }
     };
 
@@ -267,6 +274,7 @@ function Register({ onBackToLogin }) {
                     </div>
                 </form>
 
+                {wakingStatus && <p className="student-form-message student-form-waking">{wakingStatus}</p>}
                 {error && <p className="student-form-message student-form-error">{error}</p>}
                 {success && <p className="student-form-message student-form-success">{success}</p>}
             </div>

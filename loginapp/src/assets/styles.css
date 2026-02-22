@@ -100,6 +100,14 @@ body {
     text-align: center;
 }
 
+.waking-message {
+    margin-top: 10px;
+    color: #2563eb;
+    font-size: 13px;
+    text-align: center;
+    font-weight: 500;
+}
+
 .success-message {
     margin-top: 10px;
     color: #16a34a;
@@ -457,6 +465,11 @@ body {
 
 .student-form-error {
     color: #dc2626;
+}
+
+.student-form-waking {
+    color: #2563eb;
+    font-weight: 500;
 }
 
 .student-form-success {
