@@ -1,51 +1,39 @@
 import React, { useState } from 'react';
 import "./assets/styles.css";
-import API_BASE_URL from "./config/api";
+import { apiLogin } from "./api";
 
 function Login({ setUser, onNewUser }){
     const [username,setUsername ]=useState("");
     const  [password,setPassword]=useState("");
-
     const [error, setError]=useState("");
+    const [loading, setLoading]=useState(false);
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
         try{
-            const response = await fetch(`${API_BASE_URL}/api/login`,{
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                // Backend expects 'email' and 'password'
-                body: JSON.stringify({ email: username, password }),
-            });
+            const { ok, status, data } = await apiLogin(username, password);
 
-            let data = {};
-            try {
-                const text = await response.text();
-                data = text ? JSON.parse(text) : {};
-            } catch {
-                data = {};
-            }
-
-            if (response.ok) {
-                // Backend returns status: "otp_sent" or "failed"
+            if (ok) {
                 if (data.status === "otp_sent" || data.status === "success") {
-                    // Valid existing user – proceed to app (or next OTP step)
                     setUser(username);
                 } else {
-                    // New / invalid user or wrong credentials
                     setError(data.message || "Invalid user");
                 }
             } else {
-                setError(data.message || `Login failed (status ${response.status}).`);
+                setError(data.message || `Login failed (status ${status}).`);
             }
-        }catch(error){
-            setError("Something went wrong. please try again. " + error.message);
+        } catch(err) {
+            const msg = err.message || "Unknown error";
+            setError(msg.includes("Failed to fetch") || msg.includes("AbortError")
+                ? "Server is waking up. Please wait a moment and try again."
+                : "Something went wrong. Please try again. " + msg);
+        } finally {
+            setLoading(false);
         }
-        };
+    };
 
         return (
             <div className="login-container">
@@ -56,7 +44,9 @@ function Login({ setUser, onNewUser }){
                     <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} className="login-input" required/>
                     <label htmlFor="password" className="login-label">Password:</label>
                     <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="login-input" placeholder="Enter your password" required/>
-                    <button type="submit" className="login-button">Login</button>
+                    <button type="submit" className="login-button" disabled={loading}>
+                        {loading ? "Connecting..." : "Login"}
+                    </button>
                     
                     <a
                         href="#"

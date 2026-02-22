@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./assets/styles.css";
-import API_BASE_URL from "./config/api";
+import { apiSignup } from "./api";
 
 const MONTHS = [
     "January", "February", "March", "April", "May", "June",
@@ -23,11 +23,13 @@ function Register({ onBackToLogin }) {
     const [address, setAddress] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setSuccess("");
+        setLoading(true);
 
         const dob = [day, month, year].filter(Boolean).length === 3
             ? `${year}-${String(MONTHS.indexOf(month) + 1).padStart(2, "0")}-${day.padStart(2, "0")}`
@@ -47,21 +49,9 @@ function Register({ onBackToLogin }) {
         };
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/signup`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            const { ok, status, data } = await apiSignup(payload);
 
-            let data = {};
-            try {
-                const text = await response.text();
-                data = text ? JSON.parse(text) : {};
-            } catch {
-                data = {};
-            }
-
-            if (response.ok) {
+            if (ok) {
                 setSuccess(data.message || "Registration successful. You can now log in.");
                 setName("");
                 setFatherName("");
@@ -76,10 +66,15 @@ function Register({ onBackToLogin }) {
                 setCity("");
                 setAddress("");
             } else {
-                setError(data.message || `Registration failed (status ${response.status}). Please try again.`);
+                setError(data.message || `Registration failed (status ${status}). Please try again.`);
             }
         } catch (err) {
-            setError("Something went wrong. Please try again. " + err.message);
+            const msg = err.message || "Unknown error";
+            setError(msg.includes("Failed to fetch") || msg.includes("AbortError")
+                ? "Server is waking up. Please wait a moment and try again."
+                : "Something went wrong. Please try again. " + msg);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -256,7 +251,9 @@ function Register({ onBackToLogin }) {
                     </div>
 
                     <div className="student-form-actions">
-                        <button type="submit" className="student-register-button">Register</button>
+                        <button type="submit" className="student-register-button" disabled={loading}>
+                            {loading ? "Connecting..." : "Register"}
+                        </button>
                         <a
                             href="#"
                             className="student-back-link"
