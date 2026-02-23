@@ -1,7 +1,7 @@
 import API_BASE_URL from "./config/api";
 
 // Render free tier cold start: 30-60 seconds. Configure for interview/demo reliability.
-const FETCH_TIMEOUT = 90000;  // 90 seconds - allows server to wake fully
+const FETCH_TIMEOUT = 240000;  // 4 minutes  
 const RETRY_DELAY = 15000;    // 15 seconds between retries (server needs time to spin up)
 const MAX_RETRIES = 4;        // 5 total attempts = robust for cold starts
 
