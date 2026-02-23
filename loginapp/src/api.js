@@ -46,10 +46,11 @@ export async function apiLogin(email, password, onRetry) {
   const response = await fetchWithRetry(
     `${API_BASE_URL}/api/login`,
     {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    },
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password }),
+  credentials: "include",   // ✅ ADD THIS
+},
     MAX_RETRIES,
     onRetry
   );
@@ -62,10 +63,11 @@ export async function apiSignup(payload, onRetry) {
   const response = await fetchWithRetry(
     `${API_BASE_URL}/api/signup`,
     {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    },
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+  credentials: "include",   // ✅ ADD THIS
+},
     MAX_RETRIES,
     onRetry
   );
